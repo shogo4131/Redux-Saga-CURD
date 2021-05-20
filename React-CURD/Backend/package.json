@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node-dev local"
+    "start": "node-dev src/app/local.js",
+    "connect": "sqlite3 src/app/db/database.sqlite3"
   },
   "author": "",
   "license": "ISC",
