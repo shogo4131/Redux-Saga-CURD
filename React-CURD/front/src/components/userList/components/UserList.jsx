@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UserList = ({ user }) => {
+const UserList = React.memo(({ user }) => {
   return (
     <>
       <li>
@@ -8,6 +8,6 @@ const UserList = ({ user }) => {
       </li>
     </>
   );
-};
+});
 
 export default UserList;

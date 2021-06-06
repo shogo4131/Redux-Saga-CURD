@@ -18,7 +18,7 @@ app.get('/api/v1/users', (req, res) => {
   db.close();
 });
 
-// get user
+// get select user
 app.get('/api/v1/users/:id', (req, res) => {
   // DB接続
   const db = new sqlite3.Database(dbPath);
@@ -30,15 +30,18 @@ app.get('/api/v1/users/:id', (req, res) => {
   db.close();
 });
 
-// get user name
+// search user name
 app.get('/api/v1/search', (req, res) => {
   // DB接続
   const db = new sqlite3.Database(dbPath);
-  const param = req.query.q;
+  const param = req.query.name;
 
-  db.all(`select * from users where name like "%${param}%"`, (err, rows) => {
-    res.json(rows);
-  });
+  db.all(
+    `select id, name, profile from users where name like "%${param}%"`,
+    (err, rows) => {
+      res.json(rows);
+    }
+  );
   db.close();
 });
 
