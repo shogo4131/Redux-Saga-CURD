@@ -14,6 +14,7 @@ const Home = () => {
     try {
       const getUserList = async () => {
         const res = await api.get('/users');
+        console.log(res);
 
         setUserList(res.data);
       };

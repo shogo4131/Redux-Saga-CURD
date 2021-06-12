@@ -11,7 +11,9 @@ import {
 const Header = React.memo(() => {
   return (
     <UserHeader>
-      <HeaderTitle>ユーザー管理</HeaderTitle>
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <HeaderTitle>ユーザー管理</HeaderTitle>
+      </Link>
       <Navigation>
         <NavigationList>
           <Link to="/">
