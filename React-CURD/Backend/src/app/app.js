@@ -5,7 +5,7 @@ const path = require('path');
 const dbPath = 'src/app/db/database.sqlite3';
 
 const app = express();
-const getUsersRouter = require('./routers/userListApi');
+const usersRouter = require('./routers/userListApi');
 const searchUserRouter = require('./routers/searchUserApi');
 
 /* 全てのAPIのCORSを有効 */
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /* エンドポイント */
-app.use('/', getUsersRouter);
+app.use('/', usersRouter);
 app.use('/', searchUserRouter);
 
 // get select user

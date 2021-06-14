@@ -1,17 +1,17 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home } from './components/pages/home/container/index';
 import { Register } from './components/pages/register/container/index';
 
-const Router = () => {
+const Routing = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Switch>
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/register" component={Register}></Route>
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 };
 
-export default Router;
+export default Routing;

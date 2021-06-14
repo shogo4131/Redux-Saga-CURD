@@ -9,12 +9,11 @@ const Home = () => {
   const [userList, setUserList] = useState(null);
   const [searchWord, setSearchWord] = useState('');
 
-  // User API Call
+  /* ユーザー情報を全て取得 */
   useEffect(() => {
     try {
       const getUserList = async () => {
         const res = await api.get('/users');
-        console.log(res);
 
         setUserList(res.data);
       };
@@ -24,7 +23,7 @@ const Home = () => {
     }
   }, []);
 
-  // User Search API Call
+  /* ユーザー情報を検索 */
   const clickSearchFunc = useCallback(async () => {
     try {
       const res = await api.get(`/search/?name=${searchWord}`);
@@ -35,7 +34,7 @@ const Home = () => {
     }
   }, [searchWord]);
 
-  // Change SearchWord State
+  /* 検索入力欄の変更 */
   const changeSearchHandler = useCallback((e) => {
     setSearchWord(e.target.value);
   }, []);
