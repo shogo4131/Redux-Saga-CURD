@@ -8,20 +8,23 @@ import api from '../../../../api/api';
 const Home = () => {
   const [userList, setUserList] = useState(null);
   const [searchWord, setSearchWord] = useState('');
+  const [mount, setMount] = useState(false);
+  console.log(mount);
 
   /* ユーザー情報を全て取得 */
   useEffect(() => {
     try {
+      setMount(true);
       const getUserList = async () => {
         const res = await api.get('/users');
 
         setUserList(res.data);
       };
       getUserList();
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
     }
-  }, []);
+  }, [mount]);
 
   /* ユーザー情報を検索 */
   const clickSearchFunc = useCallback(async () => {
@@ -29,10 +32,20 @@ const Home = () => {
       const res = await api.get(`/search/?name=${searchWord}`);
 
       setUserList(res.data);
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
     }
   }, [searchWord]);
+
+  /* ユーザー情報を削除 */
+  const clickDeleteUserFunc = useCallback(async (id) => {
+    try {
+      const res = await api.delete(`users/${id}`);
+      setMount(true);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   /* 検索入力欄の変更 */
   const changeSearchHandler = useCallback((e) => {
@@ -49,7 +62,13 @@ const Home = () => {
       />
       <List>
         {userList &&
-          userList.map((user, index) => <UserList user={user} key={index} />)}
+          userList.map((user, index) => (
+            <UserList
+              user={user}
+              clickDeleteUser={clickDeleteUserFunc}
+              key={index}
+            />
+          ))}
       </List>
     </>
   );

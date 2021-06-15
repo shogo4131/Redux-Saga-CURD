@@ -18,7 +18,7 @@ app.use(express.json());
 /* publicディレクトリを静的ファイル群のルートディレクトリとして保存 */
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* エンドポイント */
+/* API */
 app.use('/', usersRouter);
 app.use('/', searchUserRouter);
 
@@ -32,43 +32,6 @@ app.get('/api/v1/users/:id', (req, res) => {
     res.json(row);
   });
   db.close();
-});
-
-const run = async (sql, db) => {
-  return new Promise((resolve, reject) => {
-    db.run(sql, (err) => {
-      if (err) {
-        return reject(err);
-      } else {
-        return resolve();
-      }
-    });
-  });
-};
-
-/* ユーザーを登録 */
-app.post('/api/v1/users', async (req, res) => {
-  if (!req.body.name || req.body.name === '') {
-    res.status(400).json({ message: 'ユーザー名が指定されていません。' });
-  } else {
-    // Connect database
-    const db = new sqlite3.Database(dbPath);
-
-    const name = req.body.name;
-    const profile = req.body.profile ? req.body.profile : '';
-
-    try {
-      await run(
-        `INSERT INTO users (name, profile) VALUES ("${name}", "${profile}")`,
-        db
-      );
-      res.status(201).json({ message: '新規ユーザーを作成しました。' });
-    } catch (e) {
-      res.status(500).json({ error: 'ユーザーの登録に失敗しました' });
-    }
-
-    db.close();
-  }
 });
 
 module.exports = app;
