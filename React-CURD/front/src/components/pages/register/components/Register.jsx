@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Header } from '../../../header/container/index';
 import {
   RegisterContainer,
@@ -11,6 +12,7 @@ import api from '../../../../api/api';
 
 const Register = () => {
   const history = useHistory();
+  const { state } = useLocation();
 
   const [inputName, setInputName] = useState('');
   const [inputProfile, setInputProfile] = useState('');
@@ -25,13 +27,15 @@ const Register = () => {
     setInputProfile(e.target.value);
   }, []);
 
-  /* 更新ボタン押下 */
+  /* 登録ボタン押下 */
   const clickUpdateFunc = async () => {
     try {
       const res = await api.post('/users', {
         name: inputName,
         profile: inputProfile,
       });
+
+      toast.success(res.data.message);
     } catch (error) {
       console.log(error);
     } finally {
@@ -70,10 +74,17 @@ const Register = () => {
             />
           </InputForms>
           <div>
-            <RegisterButton onClick={clickUpdateFunc}>登録</RegisterButton>
+            <RegisterButton
+              onClick={clickUpdateFunc}
+              style={{ marginRight: 10 }}
+            >
+              登録
+            </RegisterButton>
+            <RegisterButton>更新</RegisterButton>
           </div>
         </div>
       </RegisterContainer>
+      <Toaster />
     </>
   );
 };

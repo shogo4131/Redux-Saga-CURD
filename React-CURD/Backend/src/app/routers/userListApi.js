@@ -18,6 +18,18 @@ router.get('/api/v1/users', (req, res) => {
   }
 });
 
+/* 特定のユーザー情報を取得 */
+router.get('/api/v1/users/:id', (req, res) => {
+  // DB接続
+  const db = new sqlite3.Database(dbPath);
+  const id = req.params.id;
+
+  db.get(`select * from users where id = ${id}`, (err, row) => {
+    res.status(200).json(row);
+  });
+  db.close();
+});
+
 /* ユーザーを登録 */
 router.post('/api/v1/users', async (req, res) => {
   if (!req.body.name || req.body.name === '') {
