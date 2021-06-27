@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 import { Header } from '../../../header/container/index';
 import {
   RegisterContainer,
@@ -12,10 +12,18 @@ import api from '../../../../api/api';
 
 const Register = () => {
   const history = useHistory();
-  const { state } = useLocation();
+  const { selectedUser } = useLocation();
 
   const [inputName, setInputName] = useState('');
   const [inputProfile, setInputProfile] = useState('');
+
+  /* パラメーターセット */
+  useEffect(() => {
+    if (selectedUser) {
+      setInputName(selectedUser.id.name);
+      setInputProfile(selectedUser.id.profile);
+    }
+  }, [selectedUser]);
 
   /* 名前入力欄の変更 */
   const changeNameHandler = useCallback((e) => {
@@ -28,7 +36,7 @@ const Register = () => {
   }, []);
 
   /* 登録ボタン押下 */
-  const clickUpdateFunc = async () => {
+  const clickRegisterFunc = useCallback(async () => {
     try {
       const res = await api.post('/users', {
         name: inputName,
@@ -41,7 +49,23 @@ const Register = () => {
     } finally {
       history.push('/');
     }
-  };
+  }, [history, inputName, inputProfile]);
+
+  /* 更新ボタン押下 */
+  const clickUpdateFunk = useCallback(async () => {
+    try {
+      const res = await api.put(`/users/${selectedUser.id.id}`, {
+        name: inputName,
+        profile: inputProfile,
+      });
+
+      toast.success(res.data.message);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      history.push('/');
+    }
+  }, [history, inputName, inputProfile]);
 
   return (
     <>
@@ -75,12 +99,12 @@ const Register = () => {
           </InputForms>
           <div>
             <RegisterButton
-              onClick={clickUpdateFunc}
+              onClick={clickRegisterFunc}
               style={{ marginRight: 10 }}
             >
               登録
             </RegisterButton>
-            <RegisterButton>更新</RegisterButton>
+            <RegisterButton onClick={clickUpdateFunk}>更新</RegisterButton>
           </div>
         </div>
       </RegisterContainer>

@@ -55,7 +55,7 @@ const Home = () => {
       try {
         const res = await api.get(`/users/${id}`);
 
-        history.push({ pathname: '/register', state: { id: res.data } });
+        history.push({ pathname: '/register', selectedUser: { id: res.data } });
       } catch (e) {
         console.log(e);
       }
