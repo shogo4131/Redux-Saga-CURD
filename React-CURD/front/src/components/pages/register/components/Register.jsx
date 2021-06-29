@@ -37,6 +37,9 @@ const Register = () => {
 
   /* 登録ボタン押下 */
   const clickRegisterFunc = useCallback(async () => {
+    if (!inputName || !inputProfile)
+      return toast.error('名前またはプロフィールが入力されていません');
+
     try {
       const res = await api.post('/users', {
         name: inputName,
@@ -53,6 +56,9 @@ const Register = () => {
 
   /* 更新ボタン押下 */
   const clickUpdateFunk = useCallback(async () => {
+    if (!inputName || !inputProfile)
+      return toast.error('名前またはプロフィールが入力されていません');
+
     try {
       const res = await api.put(`/users/${selectedUser.id.id}`, {
         name: inputName,

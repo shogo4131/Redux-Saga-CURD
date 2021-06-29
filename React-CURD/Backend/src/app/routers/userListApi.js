@@ -50,10 +50,6 @@ router.get('/api/v1/users/:id', (req, res) => {
 router.post('/api/v1/users', async (req, res) => {
   const { name, profile } = req.body;
 
-  if (!id) {
-    return res.status(400).json({ errorMessage: '指定されたidがありません' });
-  }
-
   if (!name || name.length > 10) {
     return res.status(400).json({ errorMessage: '名前が入力されていません' });
   }
@@ -85,6 +81,10 @@ router.put('/api/v1/users/:id', async (req, res) => {
   const { id } = req.params;
   const { name, profile } = req.body;
 
+  if (!id) {
+    return res.status(400).json({ errorMessage: '指定されたidがありません' });
+  }
+
   if (!name || name.length > 10) {
     return res.status(400).json({ errorMessage: '名前が入力されていません' });
   }
@@ -94,7 +94,7 @@ router.put('/api/v1/users/:id', async (req, res) => {
   }
   const db = new sqlite3.Database(dbPath);
 
-  db.get(`select * from users where id = ${id}`, async (err, row) => {
+  db.get('select * from users where id = ?', [id], async (err, row) => {
     if (row) {
       try {
         await run(
@@ -115,10 +115,15 @@ router.put('/api/v1/users/:id', async (req, res) => {
 
 /* ユーザー情報を削除 */
 router.delete('/api/v1/users/:id', async (req, res) => {
-  const db = new sqlite3.Database(dbPath);
-  const id = req.params.id;
+  const { id } = req.params;
 
-  db.get(`select * from users where id = ${id}`, async (err, row) => {
+  if (!id) {
+    return res.status(400).json({ errorMessage: '指定されたidがありません' });
+  }
+
+  const db = new sqlite3.Database(dbPath);
+
+  db.get('select * from users where id = ?', [id], async (err, row) => {
     if (row) {
       try {
         await run(`delete from users where id = ${id}`, db);

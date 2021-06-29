@@ -5,19 +5,24 @@ const dbPath = 'src/app/db/database.sqlite3';
 
 /* ユーザー情報を検索 */
 router.get('/api/v1/search', (req, res) => {
+  const { name } = req.query;
+
+  if (!name) {
+    return res.status(400).json({ message: 'ユーザー名が入力されていません' });
+  }
+
   // DB接続
   const db = new sqlite3.Database(dbPath);
-  const param = req.query.name;
 
   try {
     db.all(
-      `select id, name, profile from users where name like "%${param}%"`,
+      `select id, name, profile from users where name like "%${name}%"`,
       (err, rows) => {
-        res.json(rows);
+        res.status(200).json(rows);
       }
     );
   } catch (error) {
-    res.json({ ErrorMessage: 'データを取得できませんでした' });
+    res.status(500).json({ ErrorMessage: 'データを取得できませんでした' });
   } finally {
     db.close();
   }
