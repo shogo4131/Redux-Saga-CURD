@@ -4,7 +4,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Header } from '../../../header/container/index';
 import { Search } from '../../../search/container/index';
 import { UserList } from '../../../userList/container/index';
-import { NotUsers } from '../../../notUsers/container/index';
 import { List } from '../../../../app/style';
 import api from '../../../../api/api';
 
@@ -22,9 +21,7 @@ const Home = () => {
       const getUserList = async () => {
         const res = await api.get('/users');
 
-        if (isMounted) {
-          setUserList(res.data);
-        }
+        if (isMounted) setUserList(res.data);
       };
 
       /* ユーザーリストAPI実行 */
@@ -92,7 +89,7 @@ const Home = () => {
         text={searchWord}
       />
       <List>
-        {userList.length > 0 ? (
+        {userList &&
           userList.map((user, index) => (
             <UserList
               user={user}
@@ -100,10 +97,7 @@ const Home = () => {
               clickDeleteUser={clickDeleteUserFunc}
               key={index}
             />
-          ))
-        ) : (
-          <NotUsers />
-        )}
+          ))}
       </List>
       <Toaster />
     </>
