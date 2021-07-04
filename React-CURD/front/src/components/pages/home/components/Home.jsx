@@ -1,40 +1,36 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+
+import Action from '../modules/HomeAction';
+
 import { Header } from '../../../header/container/index';
 import { Search } from '../../../search/container/index';
 import { UserList } from '../../../userList/container/index';
 import { List } from '../../../../app/style';
+
 import api from '../../../../api/api';
 
 const Home = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const [userList, setUserList] = useState([]);
+  const { userList } = useSelector((state) => state.home);
+
   const [searchWord, setSearchWord] = useState('');
   const [isDelete, setIsDelete] = useState(false);
 
   /* ユーザー情報を全て取得 */
   useEffect(() => {
-    try {
-      let isMounted = true;
-      const getUserList = async () => {
-        const res = await api.get('/users');
+    let isMounted = true;
+    if (isMounted) dispatch(Action.getUser());
 
-        if (isMounted) setUserList(res.data);
-      };
-
-      /* ユーザーリストAPI実行 */
-      getUserList();
-
-      return () => {
-        isMounted = false;
-        setIsDelete(false);
-      };
-    } catch (e) {
-      console.log(e);
-    }
-  }, [isDelete]);
+    return () => {
+      setIsDelete(false);
+      isMounted = false;
+    };
+  }, [isDelete, dispatch]);
 
   /* ユーザー情報を検索 */
   const clickSearchFunc = useCallback(async () => {
@@ -43,7 +39,7 @@ const Home = () => {
     try {
       const res = await api.get(`/search/?name=${searchWord}`);
 
-      setUserList(res.data);
+      // setUserList(res.data);
     } catch (e) {
       console.log(e);
     }
@@ -64,16 +60,20 @@ const Home = () => {
   );
 
   /* ユーザー情報を削除 */
-  const clickDeleteUserFunc = useCallback(async (id) => {
-    try {
-      const res = await api.delete(`users/${id}`);
+  const clickDeleteUserFunc = useCallback(
+    (id) => {
+      // try {
+      //   const res = await api.delete(`users/${id}`);
 
-      setIsDelete(true);
-      toast.success(res.data.message);
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+      //   setIsDelete(true);
+      //   toast.success(res.data.message);
+      // } catch (e) {
+      //   console.log(e);
+      // }
+      dispatch(Action.deleteUser(id));
+    },
+    [dispatch]
+  );
 
   /* 検索入力欄の変更 */
   const changeSearchHandler = useCallback((e) => {
