@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { Header } from '../../../header/container/index';
 import {
@@ -11,8 +12,10 @@ import {
 import api from '../../../../api/api';
 
 const Register = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const { selectedUser } = useLocation();
+
+  const { selectedUser } = useSelector((state) => state.home);
 
   const [inputName, setInputName] = useState('');
   const [inputProfile, setInputProfile] = useState('');
@@ -20,8 +23,8 @@ const Register = () => {
   /* パラメーターセット */
   useEffect(() => {
     if (selectedUser) {
-      setInputName(selectedUser.id.name);
-      setInputProfile(selectedUser.id.profile);
+      setInputName(selectedUser.name);
+      setInputProfile(selectedUser.profile);
     }
   }, [selectedUser]);
 
@@ -60,7 +63,7 @@ const Register = () => {
       return toast.error('名前またはプロフィールが入力されていません');
 
     try {
-      const res = await api.put(`/users/${selectedUser.id.id}`, {
+      const res = await api.put(`/users/${selectedUser.id}`, {
         name: inputName,
         profile: inputProfile,
       });

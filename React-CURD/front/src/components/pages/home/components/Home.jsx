@@ -16,10 +16,10 @@ const Home = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { userList } = useSelector((state) => state.home);
-
   const [searchWord, setSearchWord] = useState('');
   const [isDelete, setIsDelete] = useState(false);
+
+  const { userList, deleteMessage } = useSelector((state) => state.home);
 
   /* ユーザー情報を全て取得 */
   useEffect(() => {
@@ -47,32 +47,23 @@ const Home = () => {
 
   /* ユーザー情報を編集 */
   const clickEditUserFunc = useCallback(
-    async (id) => {
-      try {
-        const res = await api.get(`/users/${id}`);
+    (id) => {
+      dispatch(Action.selectedUser(id));
 
-        history.push({ pathname: '/register', selectedUser: { id: res.data } });
-      } catch (e) {
-        console.log(e);
-      }
+      history.push({ pathname: '/register' });
     },
-    [history]
+    [history, dispatch]
   );
 
   /* ユーザー情報を削除 */
   const clickDeleteUserFunc = useCallback(
     (id) => {
-      // try {
-      //   const res = await api.delete(`users/${id}`);
-
-      //   setIsDelete(true);
-      //   toast.success(res.data.message);
-      // } catch (e) {
-      //   console.log(e);
-      // }
       dispatch(Action.deleteUser(id));
+      setIsDelete(true);
+
+      toast.success(deleteMessage.message);
     },
-    [dispatch]
+    [dispatch, deleteMessage]
   );
 
   /* 検索入力欄の変更 */
