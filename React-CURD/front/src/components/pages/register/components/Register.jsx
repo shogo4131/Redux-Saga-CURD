@@ -20,7 +20,7 @@ const Register = () => {
   const [inputName, setInputName] = useState('');
   const [inputProfile, setInputProfile] = useState('');
 
-  /* パラメーターセット */
+  /* 編集ボタン押下時、値をセット */
   useEffect(() => {
     if (selectedUser) {
       setInputName(selectedUser.name);

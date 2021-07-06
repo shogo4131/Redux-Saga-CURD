@@ -6,6 +6,9 @@ import {
   SELECTED_USER_START,
   SELECTED_USER_SUCCESS,
   SELECTED_USER_FAIL,
+  SEARCH_USERS_START,
+  SEARCH_USERS_SUCCESS,
+  SEARCH_USERS_FAIL,
   DELETE_USERS_START,
   DELETE_USERS_SUCCESS,
   DELETE_USERS_FAIL,
@@ -14,6 +17,7 @@ import {
 const initialState = {
   userList: [],
   successMessage: {},
+  searchName: null,
   selectedUser: null,
   editUserID: null,
   deleteUserID: null,
@@ -25,6 +29,7 @@ export default handleActions(
     [GET_USERS_START]: (state) => ({
       ...state,
       selectedUser: null,
+      searchName: null,
     }),
     [GET_USERS_SUCCESS]: (state, action) => ({
       ...state,
@@ -43,6 +48,18 @@ export default handleActions(
       selectedUser: action.payload,
     }),
     [SELECTED_USER_FAIL]: (state, action) => ({
+      ...state,
+      error: action.payload,
+    }),
+    [SEARCH_USERS_START]: (state, action) => ({
+      ...state,
+      searchName: action.payload,
+    }),
+    [SEARCH_USERS_SUCCESS]: (state, action) => ({
+      ...state,
+      userList: action.payload,
+    }),
+    [SEARCH_USERS_FAIL]: (state, action) => ({
       ...state,
       error: action.payload,
     }),

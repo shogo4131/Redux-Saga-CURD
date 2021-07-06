@@ -10,8 +10,6 @@ import { Search } from '../../../search/container/index';
 import { UserList } from '../../../userList/container/index';
 import { List } from '../../../../app/style';
 
-import api from '../../../../api/api';
-
 const Home = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -33,17 +31,11 @@ const Home = () => {
   }, [isDelete, dispatch]);
 
   /* ユーザー情報を検索 */
-  const clickSearchFunc = useCallback(async () => {
+  const clickSearchFunc = useCallback(() => {
     if (!searchWord) return toast.error('ユーザー名が入力されていません');
 
-    try {
-      const res = await api.get(`/search/?name=${searchWord}`);
-
-      // setUserList(res.data);
-    } catch (e) {
-      console.log(e);
-    }
-  }, [searchWord]);
+    dispatch(Action.searchUser(searchWord));
+  }, [dispatch, searchWord]);
 
   /* ユーザー情報を編集 */
   const clickEditUserFunc = useCallback(
@@ -66,7 +58,7 @@ const Home = () => {
     [dispatch, deleteMessage]
   );
 
-  /* 検索入力欄の変更 */
+  /* 検索入力欄の変更検知 */
   const changeSearchHandler = useCallback((e) => {
     setSearchWord(e.target.value);
   }, []);
