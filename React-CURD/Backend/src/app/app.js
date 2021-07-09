@@ -6,8 +6,13 @@ const app = express();
 const usersRouter = require('./routers/userListApi');
 const searchUserRouter = require('./routers/searchUserApi');
 
-/* 全てのAPIのCORSを有効 */
-app.use(cors());
+/* localhost:3000からのみアクセス許可 */
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200,
+  })
+);
 
 /* リクエストのbodyをparse */
 app.use(express.urlencoded({ extended: true }));

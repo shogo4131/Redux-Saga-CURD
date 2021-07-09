@@ -5,6 +5,8 @@ import toast, { Toaster } from 'react-hot-toast';
 
 import Action from '../modules/HomeAction';
 
+import { Loading } from '../../../loading/container/index';
+import { NotUsers } from '../../../notUsers/container/index';
 import { Header } from '../../../header/container/index';
 import { Search } from '../../../search/container/index';
 import { UserList } from '../../../userList/container/index';
@@ -15,20 +17,15 @@ const Home = () => {
   const history = useHistory();
 
   const [searchWord, setSearchWord] = useState('');
-  const [isDelete, setIsDelete] = useState(false);
 
-  const { userList, deleteMessage } = useSelector((state) => state.home);
+  const { loading, userList, successMessage } = useSelector(
+    (state) => state.home
+  );
 
   /* ユーザー情報を全て取得 */
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) dispatch(Action.getUser());
-
-    return () => {
-      setIsDelete(false);
-      isMounted = false;
-    };
-  }, [isDelete, dispatch]);
+    dispatch(Action.getUser());
+  }, [dispatch]);
 
   /* ユーザー情報を検索 */
   const clickSearchFunc = useCallback(() => {
@@ -44,24 +41,41 @@ const Home = () => {
 
       history.push({ pathname: '/register' });
     },
-    [history, dispatch]
+    [dispatch, history]
   );
 
   /* ユーザー情報を削除 */
   const clickDeleteUserFunc = useCallback(
     (id) => {
       dispatch(Action.deleteUser(id));
-      setIsDelete(true);
-
-      toast.success(deleteMessage.message);
     },
-    [dispatch, deleteMessage]
+    [dispatch]
   );
 
   /* 検索入力欄の変更検知 */
   const changeSearchHandler = useCallback((e) => {
     setSearchWord(e.target.value);
   }, []);
+
+  /* ローディング表示 */
+  if (!loading) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
+
+  /* ユーザーが登録されていない場合を表示 */
+  if (userList.length <= 0) {
+    return (
+      <>
+        <Header />
+        <NotUsers />
+      </>
+    );
+  }
 
   return (
     <>
@@ -72,15 +86,14 @@ const Home = () => {
         text={searchWord}
       />
       <List>
-        {userList &&
-          userList.map((user, index) => (
-            <UserList
-              user={user}
-              clickEditUser={clickEditUserFunc}
-              clickDeleteUser={clickDeleteUserFunc}
-              key={index}
-            />
-          ))}
+        {userList.map((user) => (
+          <UserList
+            user={user}
+            clickEditUser={clickEditUserFunc}
+            clickDeleteUser={clickDeleteUserFunc}
+            key={user.id}
+          />
+        ))}
       </List>
       <Toaster />
     </>

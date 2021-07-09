@@ -15,6 +15,7 @@ import {
 } from '../../../../constants/ActionTypes';
 
 const initialState = {
+  loading: false,
   userList: [],
   successMessage: {},
   searchName: null,
@@ -28,15 +29,18 @@ export default handleActions(
   {
     [GET_USERS_START]: (state) => ({
       ...state,
+      loading: false,
       selectedUser: null,
       searchName: null,
     }),
     [GET_USERS_SUCCESS]: (state, action) => ({
       ...state,
+      loading: true,
       userList: action.payload,
     }),
     [GET_USERS_FAIL]: (state, action) => ({
       ...state,
+      loading: false,
       error: action.payload,
     }),
     [SELECTED_USER_START]: (state, action) => ({
@@ -66,6 +70,7 @@ export default handleActions(
     [DELETE_USERS_START]: (state, action) => ({
       ...state,
       deleteUserID: action.payload,
+      successMessage: null,
     }),
     [DELETE_USERS_SUCCESS]: (state, action) => ({
       ...state,
