@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+
+import Action from '../modules/RegisterAction';
+
 import { Header } from '../../../header/container/index';
 import {
   RegisterContainer,
@@ -9,7 +12,6 @@ import {
   InputLabel,
   RegisterButton,
 } from './style';
-import api from '../../../../api/api';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -43,38 +45,26 @@ const Register = () => {
     if (!inputName || !inputProfile)
       return toast.error('名前またはプロフィールが入力されていません');
 
-    try {
-      const res = await api.post('/users', {
-        name: inputName,
-        profile: inputProfile,
-      });
+    dispatch(Action.postUser({ name: inputName, profile: inputProfile }));
 
-      toast.success(res.data.message);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      history.push('/');
-    }
-  }, [history, inputName, inputProfile]);
+    history.push('/');
+  }, [dispatch, history, inputName, inputProfile]);
 
   /* 更新ボタン押下 */
   const clickUpdateFunk = useCallback(async () => {
     if (!inputName || !inputProfile)
       return toast.error('名前またはプロフィールが入力されていません');
 
-    try {
-      const res = await api.put(`/users/${selectedUser.id}`, {
+    dispatch(
+      Action.updateUser({
+        id: selectedUser.id,
         name: inputName,
         profile: inputProfile,
-      });
+      })
+    );
 
-      toast.success(res.data.message);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      history.push('/');
-    }
-  }, [history, inputName, inputProfile]);
+    history.push('/');
+  }, [dispatch, history, selectedUser.id, inputName, inputProfile]);
 
   return (
     <>

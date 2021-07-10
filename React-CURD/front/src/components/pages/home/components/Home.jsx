@@ -18,9 +18,7 @@ const Home = () => {
 
   const [searchWord, setSearchWord] = useState('');
 
-  const { loading, userList, successMessage } = useSelector(
-    (state) => state.home
-  );
+  const { loading, userList, error } = useSelector((state) => state.home);
 
   /* ユーザー情報を全て取得 */
   useEffect(() => {
@@ -56,6 +54,16 @@ const Home = () => {
   const changeSearchHandler = useCallback((e) => {
     setSearchWord(e.target.value);
   }, []);
+
+  /* 通信処理失敗表示 */
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div>{error}</div>
+      </>
+    );
+  }
 
   /* ローディング表示 */
   if (!loading) {
