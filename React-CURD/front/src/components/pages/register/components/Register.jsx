@@ -45,9 +45,13 @@ const Register = () => {
     if (!inputName || !inputProfile)
       return toast.error('名前またはプロフィールが入力されていません');
 
-    dispatch(Action.postUser({ name: inputName, profile: inputProfile }));
-
-    history.push('/');
+    dispatch(
+      Action.postUser({
+        name: inputName,
+        profile: inputProfile,
+        history,
+      })
+    );
   }, [dispatch, history, inputName, inputProfile]);
 
   /* 更新ボタン押下 */
@@ -60,11 +64,10 @@ const Register = () => {
         id: selectedUser.id,
         name: inputName,
         profile: inputProfile,
+        history,
       })
     );
-
-    history.push('/');
-  }, [dispatch, history, selectedUser.id, inputName, inputProfile]);
+  }, [dispatch, history, inputName, inputProfile]);
 
   return (
     <>

@@ -15,9 +15,8 @@ const initialState = {
 
 export default handleActions(
   {
-    [POST_USER_START]: (state, action) => ({
+    [POST_USER_START]: (state) => ({
       ...state,
-      userInfo: action.payload,
     }),
     [POST_USER_SUCCESS]: (state, action) => ({
       ...state,
@@ -27,9 +26,8 @@ export default handleActions(
       ...state,
       error: action.payload,
     }),
-    [UPDATE_USER_START]: (state, action) => ({
+    [UPDATE_USER_START]: (state) => ({
       ...state,
-      userInfo: action.payload,
     }),
     [UPDATE_USER_SUCCESS]: (state, action) => ({
       ...state,

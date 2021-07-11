@@ -29,15 +29,13 @@ const Home = () => {
   const clickSearchFunc = useCallback(() => {
     if (!searchWord) return toast.error('ユーザー名が入力されていません');
 
-    dispatch(Action.searchUser(searchWord));
+    dispatch(Action.searchUser({ searchWord }));
   }, [dispatch, searchWord]);
 
   /* ユーザー情報を編集 */
   const clickEditUserFunc = useCallback(
     (id) => {
-      dispatch(Action.selectedUser(id));
-
-      history.push({ pathname: '/register' });
+      dispatch(Action.selectedUser({ id, history }));
     },
     [dispatch, history]
   );
@@ -45,7 +43,7 @@ const Home = () => {
   /* ユーザー情報を削除 */
   const clickDeleteUserFunc = useCallback(
     (id) => {
-      dispatch(Action.deleteUser(id));
+      dispatch(Action.deleteUser({ id }));
     },
     [dispatch]
   );

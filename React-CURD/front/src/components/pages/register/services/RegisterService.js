@@ -1,20 +1,20 @@
-import { select, call, put } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import {
   POST_USER_SUCCESS,
   POST_USER_FAIL,
 } from '../../../../constants/ActionTypes';
 import api from '../../../../api/api';
 
-export default function* run() {
-  const { userInfo } = yield select((state) => state.register);
-
+export default function* run(action) {
   try {
     const { data } = yield call(api.post, '/users', {
-      name: userInfo.name,
-      profile: userInfo.profile,
+      name: action.payload.name,
+      profile: action.payload.profile,
     });
 
     yield put({ type: POST_USER_SUCCESS, payload: data });
+
+    action.payload.history.push('/');
   } catch (e) {
     yield put({
       type: POST_USER_FAIL,

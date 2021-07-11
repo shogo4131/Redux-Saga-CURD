@@ -7,12 +7,12 @@ import {
 import RegisterService from '../services/RegisterService';
 import UpdateUserService from '../services/UpdateRegisterService';
 
-function* postUser() {
-  yield call(RegisterService);
+function* postUser(action) {
+  yield call(RegisterService, action);
 }
 
-function* updateUser() {
-  yield call(UpdateUserService);
+function* updateUser(action) {
+  yield call(UpdateUserService, action);
 }
 
 const RegisterController = [

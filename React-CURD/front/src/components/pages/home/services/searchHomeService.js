@@ -1,17 +1,18 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import {
   SEARCH_USERS_SUCCESS,
   SEARCH_USERS_FAIL,
 } from '../../../../constants/ActionTypes';
 import api from '../../../../api/api';
 
-export default function* run() {
-  const { searchName } = yield select((state) => state.home);
-
+export default function* run(action) {
   try {
-    const res = yield call(api.get, `/search/?name=${searchName}`);
+    const { data } = yield call(
+      api.get,
+      `/search/?name=${action.payload.searchWord}`
+    );
 
-    yield put({ type: SEARCH_USERS_SUCCESS, payload: res.data });
+    yield put({ type: SEARCH_USERS_SUCCESS, payload: data });
   } catch (e) {
     yield put({
       type: SEARCH_USERS_FAIL,

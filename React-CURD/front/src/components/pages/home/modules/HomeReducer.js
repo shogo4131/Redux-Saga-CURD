@@ -18,10 +18,7 @@ const initialState = {
   loading: false,
   userList: [],
   successMessage: {},
-  searchName: null,
   selectedUser: null,
-  editUserID: null,
-  deleteUserID: null,
   error: null,
 };
 
@@ -31,7 +28,6 @@ export default handleActions(
       ...state,
       loading: false,
       selectedUser: null,
-      searchName: null,
     }),
     [GET_USERS_SUCCESS]: (state, action) => ({
       ...state,
@@ -43,9 +39,8 @@ export default handleActions(
       loading: false,
       error: action.payload,
     }),
-    [SELECTED_USER_START]: (state, action) => ({
+    [SELECTED_USER_START]: (state) => ({
       ...state,
-      editUserID: action.payload,
     }),
     [SELECTED_USER_SUCCESS]: (state, action) => ({
       ...state,
@@ -55,9 +50,8 @@ export default handleActions(
       ...state,
       error: action.payload,
     }),
-    [SEARCH_USERS_START]: (state, action) => ({
+    [SEARCH_USERS_START]: (state) => ({
       ...state,
-      searchName: action.payload,
     }),
     [SEARCH_USERS_SUCCESS]: (state, action) => ({
       ...state,
@@ -67,9 +61,8 @@ export default handleActions(
       ...state,
       error: action.payload,
     }),
-    [DELETE_USERS_START]: (state, action) => ({
+    [DELETE_USERS_START]: (state) => ({
       ...state,
-      deleteUserID: action.payload,
       successMessage: null,
     }),
     [DELETE_USERS_SUCCESS]: (state, action) => ({

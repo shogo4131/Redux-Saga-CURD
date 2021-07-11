@@ -1,17 +1,17 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import {
   SELECTED_USER_SUCCESS,
   SELECTED_USER_FAIL,
 } from '../../../../constants/ActionTypes';
 import api from '../../../../api/api';
 
-export default function* run() {
-  const { editUserID } = yield select((state) => state.home);
-
+export default function* run(action) {
   try {
-    const res = yield call(api.get, `/users/${editUserID}`);
+    const { data } = yield call(api.get, `/users/${action.payload.id}`);
 
-    yield put({ type: SELECTED_USER_SUCCESS, payload: res.data });
+    yield put({ type: SELECTED_USER_SUCCESS, payload: data });
+
+    action.payload.history.push({ pathname: '/register' });
   } catch (e) {
     yield put({
       type: SELECTED_USER_FAIL,

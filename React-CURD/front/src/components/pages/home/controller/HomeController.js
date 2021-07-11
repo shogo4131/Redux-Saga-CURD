@@ -15,16 +15,16 @@ function* getUsers() {
   yield call(getHomeService);
 }
 
-function* selectedUser() {
-  yield call(selectedHomeService);
+function* selectedUser(action) {
+  yield call(selectedHomeService, action);
 }
 
-function* searchUser() {
-  yield call(searchHomeService);
+function* searchUser(action) {
+  yield call(searchHomeService, action);
 }
 
-function* deleteUser() {
-  yield call(deleteHomeService);
+function* deleteUser(action) {
+  yield call(deleteHomeService, action);
 }
 
 const HomeController = [
