@@ -7,9 +7,9 @@ import api from '../../../../api/api';
 
 export default function* run() {
   try {
-    const res = yield call(api.get, '/users');
+    const { data } = yield call(api.get, '/users');
 
-    yield put({ type: GET_USERS_SUCCESS, payload: res.data });
+    yield put({ type: GET_USERS_SUCCESS, payload: data });
   } catch (e) {
     yield put({
       type: GET_USERS_FAIL,

@@ -19,55 +19,59 @@ const Register = () => {
 
   const { selectedUser } = useSelector((state) => state.home);
 
-  const [inputName, setInputName] = useState('');
-  const [inputProfile, setInputProfile] = useState('');
+  const [input, setInput] = useState({
+    name: '',
+    profile: '',
+  });
 
   /* 編集ボタン押下時、値をセット */
   useEffect(() => {
     if (selectedUser) {
-      setInputName(selectedUser.name);
-      setInputProfile(selectedUser.profile);
+      setInput({ name: selectedUser.name });
+      setInput({ profile: selectedUser.profile });
     }
   }, [selectedUser]);
 
   /* 名前入力欄の変更 */
-  const changeNameHandler = useCallback((e) => {
-    setInputName(e.target.value);
-  }, []);
+  const changeNameHandler = (e) => {
+    setInput({ ...input, name: e.target.value });
+  };
 
   /* プロフィール入力欄の変更 */
-  const changeProfileHandler = useCallback((e) => {
-    setInputProfile(e.target.value);
-  }, []);
+  const changeProfileHandler = (e) => {
+    setInput({ ...input, profile: e.target.value });
+  };
 
   /* 登録ボタン押下 */
-  const clickRegisterFunc = useCallback(async () => {
-    if (!inputName || !inputProfile)
+  const clickRegisterFunc = useCallback(() => {
+    if (!input.name || !input.profile)
       return toast.error('名前またはプロフィールが入力されていません');
 
     dispatch(
       Action.postUser({
-        name: inputName,
-        profile: inputProfile,
+        name: input.name,
+        profile: input.profile,
         history,
+        toast,
       })
     );
-  }, [dispatch, history, inputName, inputProfile]);
+  }, [dispatch, history, input]);
 
   /* 更新ボタン押下 */
-  const clickUpdateFunk = useCallback(async () => {
-    if (!inputName || !inputProfile)
+  const clickUpdateFunk = useCallback(() => {
+    if (!input.name || !input.profile)
       return toast.error('名前またはプロフィールが入力されていません');
 
     dispatch(
       Action.updateUser({
         id: selectedUser.id,
-        name: inputName,
-        profile: inputProfile,
+        name: input.name,
+        profile: input.profile,
         history,
+        toast,
       })
     );
-  }, [dispatch, history, inputName, inputProfile]);
+  }, [dispatch, history, input]);
 
   return (
     <>
@@ -84,7 +88,7 @@ const Register = () => {
               type="text"
               placeholder="例) 山田太郎"
               maxLength="10"
-              value={inputName}
+              value={input.name || ''}
               onChange={changeNameHandler}
             />
           </InputForms>
@@ -95,7 +99,7 @@ const Register = () => {
               type="text"
               placeholder="例) 野球が好きです"
               maxLength="30"
-              value={inputProfile}
+              value={input.profile || ''}
               onChange={changeProfileHandler}
             />
           </InputForms>

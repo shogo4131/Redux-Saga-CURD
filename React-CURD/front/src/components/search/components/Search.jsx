@@ -11,7 +11,9 @@ const Search = React.memo(({ clickSearch, changeSearch, text }) => {
         value={text}
         onChange={changeSearch}
       />
-      <SearchButton onClick={clickSearch}>検索</SearchButton>
+      <SearchButton onClick={clickSearch} disabled={text ? false : true}>
+        検索
+      </SearchButton>
     </SearchContainer>
   );
 });

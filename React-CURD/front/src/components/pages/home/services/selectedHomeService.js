@@ -6,12 +6,14 @@ import {
 import api from '../../../../api/api';
 
 export default function* run(action) {
+  const { id, history } = action.payload;
+
   try {
-    const { data } = yield call(api.get, `/users/${action.payload.id}`);
+    const { data } = yield call(api.get, `/users/${id}`);
 
     yield put({ type: SELECTED_USER_SUCCESS, payload: data });
 
-    action.payload.history.push({ pathname: '/register' });
+    history.push({ pathname: '/register' });
   } catch (e) {
     yield put({
       type: SELECTED_USER_FAIL,

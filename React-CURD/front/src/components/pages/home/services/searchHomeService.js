@@ -6,11 +6,10 @@ import {
 import api from '../../../../api/api';
 
 export default function* run(action) {
+  const { searchWord } = action.payload;
+
   try {
-    const { data } = yield call(
-      api.get,
-      `/search/?name=${action.payload.searchWord}`
-    );
+    const { data } = yield call(api.get, `/search/?name=${searchWord}`);
 
     yield put({ type: SEARCH_USERS_SUCCESS, payload: data });
   } catch (e) {

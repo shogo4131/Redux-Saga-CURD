@@ -43,7 +43,7 @@ const Home = () => {
   /* ユーザー情報を削除 */
   const clickDeleteUserFunc = useCallback(
     (id) => {
-      dispatch(Action.deleteUser({ id }));
+      dispatch(Action.deleteUser({ id, toast }));
     },
     [dispatch]
   );

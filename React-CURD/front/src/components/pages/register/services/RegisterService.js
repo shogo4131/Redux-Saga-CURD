@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import {
   POST_USER_SUCCESS,
   POST_USER_FAIL,
@@ -6,15 +6,21 @@ import {
 import api from '../../../../api/api';
 
 export default function* run(action) {
+  const { name, profile, history, toast } = action.payload;
+
   try {
     const { data } = yield call(api.post, '/users', {
-      name: action.payload.name,
-      profile: action.payload.profile,
+      name,
+      profile,
     });
 
     yield put({ type: POST_USER_SUCCESS, payload: data });
 
-    action.payload.history.push('/');
+    const { successMessage } = yield select((state) => state.register);
+
+    toast.success(successMessage.message);
+
+    history.push('/');
   } catch (e) {
     yield put({
       type: POST_USER_FAIL,

@@ -10,6 +10,7 @@ import {
 
 const initialState = {
   userInfo: {},
+  successMessage: {},
   error: null,
 };
 
@@ -17,10 +18,11 @@ export default handleActions(
   {
     [POST_USER_START]: (state) => ({
       ...state,
+      successMessage: null,
     }),
     [POST_USER_SUCCESS]: (state, action) => ({
       ...state,
-      userInfo: {},
+      successMessage: action.payload,
     }),
     [POST_USER_FAIL]: (state, action) => ({
       ...state,
@@ -28,10 +30,11 @@ export default handleActions(
     }),
     [UPDATE_USER_START]: (state) => ({
       ...state,
+      successMessage: null,
     }),
     [UPDATE_USER_SUCCESS]: (state, action) => ({
       ...state,
-      userInfo: {},
+      successMessage: action.payload,
     }),
     [UPDATE_USER_FAIL]: (state, action) => ({
       ...state,
