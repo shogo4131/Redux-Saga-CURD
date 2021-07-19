@@ -27,8 +27,6 @@ const Home = () => {
 
   /* ユーザー情報を検索 */
   const clickSearchFunc = useCallback(() => {
-    if (!searchWord) return toast.error('ユーザー名が入力されていません');
-
     dispatch(Action.searchUser({ searchWord }));
   }, [dispatch, searchWord]);
 
@@ -53,22 +51,22 @@ const Home = () => {
     setSearchWord(e.target.value);
   }, []);
 
-  /* 通信処理失敗表示 */
-  if (error) {
-    return (
-      <>
-        <Header />
-        <div>{error}</div>
-      </>
-    );
-  }
-
   /* ローディング表示 */
   if (!loading) {
     return (
       <>
         <Header />
         <Loading />
+      </>
+    );
+  }
+
+  /* 通信処理失敗表示 */
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div>{error}</div>
       </>
     );
   }
