@@ -16,3 +16,6 @@ Redux-Sagaの復習用にREST APIを作成し、ユーザー管理アプリを�
 
 - BackEnd
     - Express
+    - body-parser
+    - cors
+    - sqlite3
