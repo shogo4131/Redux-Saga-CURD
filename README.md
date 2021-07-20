@@ -7,4 +7,12 @@ Redux-Sagaの復習用にREST APIを作成し、ユーザー管理アプリを�
 - FrontEnd
     - React
     - styled-components
-    - redux
+    - react-router-dom
+    - react-redux
+    - redux-actions
+    - redux-saga
+    - react-hot-toast
+    - axios
+
+- BackEnd
+    - Express
