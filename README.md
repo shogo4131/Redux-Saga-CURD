@@ -5,4 +5,4 @@ Redux-Sagaの復習用にREST APIを作成し、ユーザー管理アプリを�
 
 ## 使用技術
 - FrontEnd
- - React
+    - React
